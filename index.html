@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comida Casera</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <h1><i class="fas fa-utensils"></i> Comida Casera</h1>
+    <p><i class="fas fa-check-circle"></i> Las mejores tortas, desayunos, comida corrida, postres y antojitos</p>
+  </div>
+</header>
+
+<div class="page-layout">
+  <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+  <button class="sidebar-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+  <nav class="sidebar">
+    <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false"><i class="fas fa-home"></i> Inicio</a>
+    <div class="sidebar-header">Categorías</div>
+    <a href="#tortas"><i class="fas fa-bread-slice"></i> Tortas</a>
+    <a href="#desayunos"><i class="fas fa-sun"></i> Desayunos</a>
+    <a href="#comida"><i class="fas fa-utensil-spoon"></i> Comida corrida</a>
+    <a href="#postres"><i class="fas fa-cake"></i> Postres</a>
+    <a href="#antojitos"><i class="fas fa-taco"></i> Antojitos</a>
+  </nav>
+
+  <div class="main-content">
+    <div class="container">
+      <section id="tortas">
+        <h2><i class="fas fa-bread-slice"></i> Tortas</h2>
+        <div class="menu-grid" id="grid-tortas"></div>
+      </section>
+      <section id="desayunos">
+        <h2><i class="fas fa-sun"></i> Desayunos</h2>
+        <div class="menu-grid" id="grid-desayunos"></div>
+      </section>
+      <section id="comida">
+        <h2><i class="fas fa-utensil-spoon"></i> Comida corrida</h2>
+        <div class="menu-grid" id="grid-comida"></div>
+      </section>
+      <section id="postres">
+        <h2><i class="fas fa-cake"></i> Postres</h2>
+        <div class="menu-grid" id="grid-postres"></div>
+      </section>
+      <section id="antojitos">
+        <h2><i class="fas fa-taco"></i> Antojitos</h2>
+        <div class="menu-grid" id="grid-antojitos"></div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<!-- Cart -->
+<div class="modal-overlay" id="cartOverlay" onclick="toggleCart()">
+  <div class="modal cart-modal" id="cartModal" onclick="event.stopPropagation()">
+    <div class="cart-header">
+      <h3><i class="fas fa-shopping-cart"></i> Carrito</h3>
+      <button onclick="toggleCart()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="cart-items" id="cartItems">
+      <div class="cart-empty">Tu carrito está vacío</div>
+    </div>
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span>Total</span>
+        <span id="cartTotal">$0.00</span>
+      </div>
+      <button class="btn-whatsapp-order" id="btnWhatsapp" onclick="sendToWhatsApp()" disabled>
+        <i class="fab fa-whatsapp"></i> Enviar a WhatsApp
+      </button>
+    </div>
+  </div>
+</div>
+<button class="cart-fab" onclick="toggleCart()">
+  <i class="fas fa-shopping-cart"></i>
+  <span class="badge" id="cartBadge">0</span>
+</button>
+<div class="cart-toast" id="cartToast">Agregado al carrito</div>
+
+<!-- Contacto -->
+<section id="contacto">
+  <div class="container">
+    <div class="text-center mb-4">
+      <h2 style="font-size:1.8rem;"><i class="fas fa-envelope"></i> Contáctanos</h2>
+      <p style="color:#6b5342;">¿Tienes alguna pregunta o pedido especial? Escríbenos</p>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="contact-form-card">
+          <div id="contactError" style="display:none;background:#fce4d6;color:#c0392b;padding:12px 16px;border-radius:10px;margin-bottom:16px;font-weight:600;align-items:center;gap:10px;">
+            <i class="fas fa-info-circle fa-lg"></i> <span id="contactErrorText">Se deben llenar todos los campos del formulario.</span>
+          </div>
+          <div id="contactSuccess" style="display:none;background:#d4edda;color:#155724;padding:12px 16px;border-radius:10px;margin-bottom:16px;font-weight:600;align-items:center;gap:10px;">
+            <i class="fas fa-check-circle fa-lg"></i> El mensaje se envió correctamente.
+          </div>
+          <form>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="contactName" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="contactName" placeholder="Tu nombre">
+              </div>
+              <div class="col-md-6">
+                <label for="contactPhone" class="form-label">Teléfono</label>
+                <input type="tel" class="form-control" id="contactPhone" placeholder="Tu teléfono">
+              </div>
+              <div class="col-md-6">
+                <label for="contactEmail" class="form-label">Correo Electrónico</label>
+                <input type="email" class="form-control" id="contactEmail" placeholder="tu@correo.com">
+              </div>
+              <div class="col-12">
+                <label for="contactMessage" class="form-label">Mensaje</label>
+                <textarea class="form-control" id="contactMessage" rows="4" placeholder="Escribe tu mensaje..."></textarea>
+              </div>
+              <div class="col-12 text-center">
+                <button type="button" onclick="sendContact()" class="btn-contact-send" id="btnContactSend">
+                  <span class="spinner"></span>
+                  <span class="btn-text"><i class="fas fa-paper-plane"></i> Enviar mensaje</span>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="social">
+      <a href="https://www.facebook.com/people/JuanPanchos-Computers-Tehuac%C3%A1n/61577993078029/" target="_blank" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+      <a href="https://www.instagram.com/juanpanchos_tehuacan/" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+    </div>
+    <p style="margin-top: 8px;"><i class="fas fa-heart" style="color: #e85d3a;"></i> Comida Casera — Hecho con amor by
+      <a href="https://resendiz1.github.io/juanpancho-s/" target="_blank" style="color: #6b5342; text-decoration: none;">
+      &lt;JuanPancho's/&gt;
+      </a>
+    </p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
